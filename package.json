@@ -1,0 +1,26 @@
+{
+  "name": "model-viewer",
+  "version": "1.0.0",
+  "description": "-",
+  "main": "index.js",
+  "scripts": {
+    "dev": "gulp watch",
+    "prod": "gulp --production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "-"
+  },
+  "keywords": [
+    "-"
+  ],
+  "author": "Rohal",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "laravel-elixir": "^6.0.0-15"
+  },
+  "dependencies": {
+    "three": "^0.84.0"
+  }
+}
