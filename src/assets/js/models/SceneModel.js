@@ -1,11 +1,11 @@
 "use strict";
 
-var ScreenModel = (function() {
-    function ScreenModel() {
+var SceneModel = (function() {
+    function SceneModel() {
         this.registerEvents();
     }
 
-    ScreenModel.prototype = {
+    SceneModel.prototype = {
         registerEvents : function() {
 
         },
@@ -15,5 +15,5 @@ var ScreenModel = (function() {
         }
     }
 
-    return ScreenModel;
+    return SceneModel;
 })();

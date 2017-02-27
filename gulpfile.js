@@ -21,13 +21,13 @@ elixir(function(mix){
             './src/assets/js/services/ModelService.js',
             
             // Models
-            './src/assets/js/models/ScreenModel.js',
+            './src/assets/js/models/SceneModel.js',
 
             // Views
-            './src/assets/js/views/ScreenView.js',
+            './src/assets/js/views/SceneView.js',
 
             // Controllers
-            './src/assets/js/controllers/ScreenController.js',
+            './src/assets/js/controllers/SceneController.js',
 
             // Event
             './src/assets/js/Event.js',
@@ -40,7 +40,8 @@ elixir(function(mix){
 
     mix.scripts(
         [
-            './node_modules/three/build/three.js'
+            './node_modules/three/build/three.js',
+            './node_modules/jquery/dist/jquery.js',
         ],
         'dist/js/vendors.js'
     );

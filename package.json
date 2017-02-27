@@ -21,6 +21,7 @@
     "laravel-elixir": "^6.0.0-15"
   },
   "dependencies": {
+    "jquery": "^3.1.1",
     "three": "^0.84.0"
   }
 }

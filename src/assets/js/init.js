@@ -1,11 +1,11 @@
 "use strict";
 
-var screenModel, screenController, screenView;
+var sceneModel, sceneController, sceneView;
 
-if(!screenModel) {
-    screenModel = new ScreenModel();
-    screenView = new ScreenView(screenModel);
-    screenController = new ScreenController(screenView, screenModel);
+if(!sceneModel) {
+    sceneModel = new SceneModel();
+    sceneView = new SceneView(sceneModel);
+    sceneController = new SceneController(sceneView, sceneModel);
 }
 
-screenController.generateTemplate();
+sceneController.generateTemplate();

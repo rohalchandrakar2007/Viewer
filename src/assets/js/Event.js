@@ -13,7 +13,7 @@ var Event = (function(){
         notify: function(args) {
             var index;
 
-            for (index = 0; index < this._listeners.length; index--) {
+            for (index = 0; index < this._listeners.length; index++) {
                 this._listeners[index](this._sender, args);
             }
         }
