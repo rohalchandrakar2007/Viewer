@@ -19,7 +19,10 @@ var SceneController = (function() {
         generateTemplate: function() {
             var self = this;
             self._view.buildSkeleton();
+            self._view.initModel();
             // ViewUtil.showLoader();
+            
+            // this._model.loadModel();
             
             // this._model.loadModel().then(
             //     function(response) { // Success

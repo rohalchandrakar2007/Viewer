@@ -14,6 +14,7 @@ var SceneView = (function() {
         this._elements = getElements();
 
         this.registerEvents();
+        this.attachEvents();
         this.attachListeners();
     }
 
@@ -22,7 +23,7 @@ var SceneView = (function() {
             this.windowResized = new Event(this);
             this.btnHelloClicked = new Event(this);
         },
-        attachListeners : function() {
+        attachEvents : function() {
             var self = this;
 
             $(window).on('resize', function(e) {
@@ -33,6 +34,9 @@ var SceneView = (function() {
             $(self._elements.mainContainer).on('click', self._elements.btnHello, function() {
                 self.btnHelloClicked.notify();
             });
+        },
+        attachListeners: function() {
+            var self = this;
         },
         buildSkeleton: function(data) {
             var template = [];
@@ -53,7 +57,25 @@ var SceneView = (function() {
         setupEnvironment: function() {
 
         },
-        showModel: function (data) {
+        initModel: function () {
+            var self = this;
+            var params = {
+                'onLoad' : function(object) {
+                    console.log('onload');
+                    self.showModel(model);
+                },
+                'onError' : function() {
+                    console.log('onerror');
+                },
+                'onProgress' :  function(xhr) {
+                    console.log('onprogress');
+                }
+            };
+            
+            return ModelService.getObjModel(1, params);
+        },
+        showModel: function (model) {
+
         },
         onWindowResize: function() {
 

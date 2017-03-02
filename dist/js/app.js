@@ -76,6 +76,37 @@ var AjaxUtil = (function(){
 
             return $.ajax(ajaxObj);
         },
+        getObjFileData: function (url,params) {
+            var self = this;
+            //var progressCallback = params.progressCallback || false;
+            
+            var onLoad = params.onLoad || function defaultOnloadCallback () {
+                
+            };
+            var onError = params.onError || function defaultErrorCallback () {
+                
+            };
+            var onProgress = params.onProgress || function (xhr) {
+                if ( xhr.lengthComputable ) {
+                    var percentComplete = xhr.loaded / xhr.total * 100;
+                    console.log( Math.round(percentComplete, 2) + '% downloaded' );
+                }
+            }
+            
+            var manager = new THREE.LoadingManager();
+            manager.onProgress = function ( item, loaded, total ) {
+                console.log( item, loaded, total );
+            };
+            
+            var loader = new THREE.OBJLoader( manager );
+            loader.load( url,
+                onLoad,
+                onProgress,
+                onError
+            );
+            
+            
+        },
         makeRequest: function (url, type, data, async) {
             var enableCORS = enableCORS || false;
             var data  = (typeof data === 'undefined') ? {} : data;
@@ -151,6 +182,10 @@ var ModelService = (function(){
         getModel: function(id) {
             var url = '';
             return AjaxUtil.getData(url);
+        },
+        getObjModel: function(id,params) {
+            var url = '/src/assets/data/3dmodels/obj/male02.obj';
+            return AjaxUtil.getObjFileData(url, params);
         }
     };
 })();
@@ -163,11 +198,27 @@ var SceneModel = (function() {
 
     SceneModel.prototype = {
         registerEvents : function() {
-
+            this.modelLoaded = new Event(this);
         },
         loadModel: function() {
+            var self = this;
             var modelId = 1;
-            return ModelService.getModel(modelId);
+            //return ModelService.getModel(modelId);
+            
+            var params = {
+                'onLoad' : function(object) {
+                    console.log('onload');
+                    self.modelLoaded.notify({'object':object});
+                },
+                'onError' : function() {
+                    console.log('onerror');
+                },
+                'onProgress' :  function(xhr) {
+                    console.log('onprogress');
+                }
+            };
+            
+            return ModelService.getObjModel(modelId, params);
         }
     }
 
@@ -189,6 +240,7 @@ var SceneView = (function() {
         this._elements = getElements();
 
         this.registerEvents();
+        this.attachEvents();
         this.attachListeners();
     }
 
@@ -197,7 +249,7 @@ var SceneView = (function() {
             this.windowResized = new Event(this);
             this.btnHelloClicked = new Event(this);
         },
-        attachListeners : function() {
+        attachEvents : function() {
             var self = this;
 
             $(window).on('resize', function(e) {
@@ -208,6 +260,9 @@ var SceneView = (function() {
             $(self._elements.mainContainer).on('click', self._elements.btnHello, function() {
                 self.btnHelloClicked.notify();
             });
+        },
+        attachListeners: function() {
+            var self = this;
         },
         buildSkeleton: function(data) {
             var template = [];
@@ -228,7 +283,25 @@ var SceneView = (function() {
         setupEnvironment: function() {
 
         },
-        showModel: function (data) {
+        initModel: function () {
+            var self = this;
+            var params = {
+                'onLoad' : function(object) {
+                    console.log('onload');
+                    self.showModel(model);
+                },
+                'onError' : function() {
+                    console.log('onerror');
+                },
+                'onProgress' :  function(xhr) {
+                    console.log('onprogress');
+                }
+            };
+            
+            return ModelService.getObjModel(1, params);
+        },
+        showModel: function (model) {
+
         },
         onWindowResize: function() {
 
@@ -261,7 +334,10 @@ var SceneController = (function() {
         generateTemplate: function() {
             var self = this;
             self._view.buildSkeleton();
+            self._view.initModel();
             // ViewUtil.showLoader();
+            
+            // this._model.loadModel();
             
             // this._model.loadModel().then(
             //     function(response) { // Success
