@@ -11,26 +11,15 @@ var SceneController = (function() {
     SceneController.prototype = {
         attachListeners : function() {
             var self = this;
-
-            self._view.btnHelloClicked.attach(function(sender, args) {
-                self._view.hello('Hello Rohal');
+            
+            self._model.modelLoaded.attach(function(sender, args){
+                self._view.showModel(args);
             });
         },
         generateTemplate: function() {
             var self = this;
+            this._model.loadModel();
             self._view.buildSkeleton();
-            // ViewUtil.showLoader();
-            
-            // this._model.loadModel().then(
-            //     function(response) { // Success
-            //         var data = response.data;
-            //         self._view.buildSkeleton(data);
-            //         ViewUtil.hideLoader();
-            //     },
-            //     function(response) { // Fail
-            //     }
-            // );
-
         }
     }
 

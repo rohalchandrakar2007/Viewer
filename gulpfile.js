@@ -34,6 +34,8 @@ elixir(function(mix){
             
             // Init
             './src/assets/js/init.js',
+            
+            
         ],
         'dist/js/app.js'
     );
@@ -42,6 +44,8 @@ elixir(function(mix){
         [
             './node_modules/three/build/three.js',
             './node_modules/jquery/dist/jquery.js',
+            // THREEJS
+            './src/assets/vendors/OBJLoader.js'
         ],
         'dist/js/vendors.js'
     );

@@ -21,6 +21,37 @@ var AjaxUtil = (function(){
 
             return $.ajax(ajaxObj);
         },
+        getObjFileData: function (url,params) {
+            var self = this;
+            //var progressCallback = params.progressCallback || false;
+            
+            var onLoad = params.onLoad || function defaultOnloadCallback () {
+                
+            };
+            var onError = params.onError || function defaultErrorCallback () {
+                
+            };
+            var onProgress = params.onProgress || function (xhr) {
+                if ( xhr.lengthComputable ) {
+                    var percentComplete = xhr.loaded / xhr.total * 100;
+                    console.log( Math.round(percentComplete, 2) + '% downloaded' );
+                }
+            }
+            
+            var manager = new THREE.LoadingManager();
+            manager.onProgress = function ( item, loaded, total ) {
+                console.log( item, loaded, total );
+            };
+            
+            var loader = new THREE.OBJLoader( manager );
+            loader.load( url,
+                onLoad,
+                onProgress,
+                onError
+            );
+            
+            
+        },
         makeRequest: function (url, type, data, async) {
             var enableCORS = enableCORS || false;
             var data  = (typeof data === 'undefined') ? {} : data;
