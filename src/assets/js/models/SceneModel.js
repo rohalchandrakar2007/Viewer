@@ -3,6 +3,7 @@
 var SceneModel = (function() {
     function SceneModel() {
         this.registerEvents();
+        
     }
 
     SceneModel.prototype = {
