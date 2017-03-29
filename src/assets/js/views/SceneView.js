@@ -44,7 +44,7 @@ var SceneView = (function() {
             );
             template = template.join('');
 
-            $(this._elements.mainContainer).html(template);
+            // $(this._elements.mainContainer).html(template);
         },
         buildView: function() {
             this.setupEnvironment();
