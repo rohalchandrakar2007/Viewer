@@ -13,7 +13,6 @@ var SceneModel = (function() {
         loadModel: function() {
             var self = this;
             var modelId = 1;
-            //return ModelService.getModel(modelId);
             
             var params = {
                 'onLoad' : function(object) {

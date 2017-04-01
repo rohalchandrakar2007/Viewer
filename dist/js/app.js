@@ -25,7 +25,7 @@ var EnvConfig = (function () {
         dev: {
             env: env,
             protocol: 'http://',
-            apiURL: '',
+            apiURL: 'localhost/00sandbox/pixum/model-viewer',
             showLogs: true
         },
         beta: {
@@ -184,7 +184,7 @@ var ModelService = (function(){
             return AjaxUtil.getData(url);
         },
         getObjModel: function(id,params) {
-            var url = '/src/assets/data/3dmodels/obj/male02.obj';
+            var url = EnvConfig.protocol + EnvConfig.apiURL + '/src/assets/data/3dmodels/obj/male02.obj';
             return AjaxUtil.getObjFileData(url, params);
         }
     };
@@ -204,7 +204,6 @@ var SceneModel = (function() {
         loadModel: function() {
             var self = this;
             var modelId = 1;
-            //return ModelService.getModel(modelId);
             
             var params = {
                 'onLoad' : function(object) {
@@ -230,7 +229,8 @@ var SceneModel = (function() {
 var SceneView = (function() {
     function getElements() {
         return {
-            'mainContainer' : '#app'
+            'mainContainer'  : '#app',
+            'modelContainer' : '.model-container .model',
         };
     }
 
@@ -239,54 +239,65 @@ var SceneView = (function() {
 
         this._elements = getElements();
         
-        this.mouseX = 0;
-        this.mouseY = 0;
-        this._container = document.getElementById("app");
-        this._windowHalfX = window.innerWidth / 2;
-        this._windowHalfY = window.innerHeight / 2;
+        this._scene = null;
+        this._camera = null;
+        this._renderer = null;
+        this._mouseX = 0;
+        this._mouseY = 0;
+        this._windowWidth = window.innerWidth;
+        this._windowHeight = window.innerHeight;
         
-        this._scene = new THREE.Scene();
-        this._camera = new THREE.PerspectiveCamera( 45, this._windowHalfX / this._windowHalfY, 1, 2000 );
-        this._lightAmbient;
-        this._lightDiretional;
-        
-        this._renderer = new THREE.WebGLRenderer();
-        this._renderer.setPixelRatio( window.devicePixelRatio );
-        this._renderer.setSize( this._windowHalfX, this._windowHalfY );
-        console.log(this._container);
-        this._container.appendChild( this._renderer.domElement );
+        this._lightAmbient = null;
+        this._lightDiretional = null;
 
         this.registerEvents();
         this.attachEvents();
-        this.attachListeners();
+        this.attachModelListeners();
     }
 
     SceneView.prototype = {
         registerEvents : function() {
             this.windowResized = new Event(this);
-            this.onCursorMove = new Event(this);
-            this.btnHelloClicked = new Event(this);
+            this.mouseMoving = new Event(this);
         },
         attachEvents : function() {
             var self = this;
 
             $(window).on('resize', function(e) {
                 self.onWindowResize();
+                self.windowResized.notify();
             });
             
             $(window).on('mousemove', function(e) {
                 self.onMouseMove(e);
+                self.mouseMoving.notify();
             });
         },
-        attachListeners: function() {
+        attachModelListeners: function() {
             var self = this;
+
+            self._model.modelLoaded.attach(function(sender, args){
+                self.showModel(args);
+            });
         },
         buildSkeleton: function(data) {
+            // this.initControls();
             this.buildView();
         },
         buildView: function() {
+            this.initScene();
             this.setupEnvironment();
             this.animate();
+        },
+        initScene: function() {
+            this._scene = new THREE.Scene();
+            this._camera = new THREE.PerspectiveCamera( 45, this._windowWidth / this._windowHeight, 1, 2000 );
+            
+            this._renderer = new THREE.WebGLRenderer();
+            this._renderer.setPixelRatio( window.devicePixelRatio );
+            $(this._renderer.domElement).addClass('model-canvas');
+            this._renderer.setSize( this._windowWidth, this._windowHeight );
+            $(this._elements.modelContainer).append( this._renderer.domElement );
         },
         setupEnvironment: function() {
             this._lightAmbient = new THREE.AmbientLight( 0x444444 );
@@ -302,26 +313,26 @@ var SceneView = (function() {
             this._scene.add(object.object);
         },
         onWindowResize: function() {
-            this.windowHalfX = window.innerWidth / 2;
-            this.windowHalfY = window.innerHeight / 2;
-            this._camera.aspect = this._windowHalfX / this._windowHalfY;
+            this._windowWidth = window.innerWidth;
+            this._windowHeight = window.innerHeight;
+            this._camera.aspect = this._windowWidth / this._windowHeight;
             this._camera.updateProjectionMatrix();
-            this._renderer.setSize( this._windowHalfX, this._windowHalfY );
+            this._renderer.setSize( this._windowWidth, this._windowHeight );
         },
         onMouseMove:function(event){
-            this.mouseX = ( event.clientX - this._windowHalfX ) / 2;
-            this.mouseY = ( event.clientY - this._windowHalfY ) / 2;
+            this._mouseX = ( event.clientX - this._windowWidth ) / 2;
+            this._mouseY = ( event.clientY - this._windowHeight ) / 2;
             this.render();
         },
         animate: function() {
-				requestAnimationFrame( this.animate.bind(this) );
-				this.render();
+			requestAnimationFrame( this.animate.bind(this) );
+			this.render();
         },
         render: function() {
-				this._camera.position.x += ( this.mouseX - this._camera.position.x ) * .05;
-				this._camera.position.y += ( - this.mouseY - this._camera.position.y ) * .05;
-				this._camera.lookAt( this._scene.position );
-				this._renderer.render( this._scene, this._camera );
+			this._camera.position.x += ( this._mouseX - this._camera.position.x ) * .05;
+			this._camera.position.y += ( - this._mouseY - this._camera.position.y ) * .05;
+			this._camera.lookAt( this._scene.position );
+			this._renderer.render( this._scene, this._camera );
         }
     }
 
@@ -334,16 +345,12 @@ var SceneController = (function() {
         this._view = view;
         this._model = model;
 
-        this.attachListeners();
+        this.attachViewListeners();
     }
 
     SceneController.prototype = {
-        attachListeners : function() {
+        attachViewListeners : function() {
             var self = this;
-            
-            self._model.modelLoaded.attach(function(sender, args){
-                self._view.showModel(args);
-            });
         },
         generateTemplate: function() {
             var self = this;

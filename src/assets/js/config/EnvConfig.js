@@ -18,7 +18,7 @@ var EnvConfig = (function () {
         dev: {
             env: env,
             protocol: 'http://',
-            apiURL: '',
+            apiURL: 'localhost/00sandbox/pixum/model-viewer',
             showLogs: true
         },
         beta: {
