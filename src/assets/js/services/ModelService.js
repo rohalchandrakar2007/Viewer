@@ -7,7 +7,7 @@ var ModelService = (function(){
             return AjaxUtil.getData(url);
         },
         getObjModel: function(id,params) {
-            var url = '/src/assets/data/3dmodels/obj/male02.obj';
+            var url = EnvConfig.protocol + EnvConfig.apiURL + '/src/assets/data/3dmodels/obj/male02.obj';
             return AjaxUtil.getObjFileData(url, params);
         }
     };

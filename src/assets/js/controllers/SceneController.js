@@ -5,16 +5,12 @@ var SceneController = (function() {
         this._view = view;
         this._model = model;
 
-        this.attachListeners();
+        this.attachViewListeners();
     }
 
     SceneController.prototype = {
-        attachListeners : function() {
+        attachViewListeners : function() {
             var self = this;
-            
-            self._model.modelLoaded.attach(function(sender, args){
-                self._view.showModel(args);
-            });
         },
         generateTemplate: function() {
             var self = this;
