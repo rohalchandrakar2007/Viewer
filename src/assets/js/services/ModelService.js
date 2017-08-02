@@ -1,14 +1,29 @@
 "use strict";
 
-var ModelService = (function(){
+var ModelService = (function () {
     return {
-        getModel: function(id) {
+        getModel: function (id) {
             var url = '';
             return AjaxUtil.getData(url);
         },
-        getObjModel: function(id,params) {
-            var url = EnvConfig.protocol + EnvConfig.apiURL + '/src/assets/data/3dmodels/obj/male02.obj';
-            return AjaxUtil.getObjFileData(url, params);
+        getObjModel: function (__modelConfig, params) {
+            var rootpath = EnvConfig.protocol + EnvConfig.apiURL + __modelConfig.rootpath;
+            var objfilename = __modelConfig.objfilename;
+            return AjaxUtil.getObjFileData(rootpath, objfilename, params);
+        },
+        getObjMtlModel: function (__modelConfig, params) {
+            var rootpath = EnvConfig.protocol + EnvConfig.apiURL + __modelConfig.rootpath;
+            var objfilename = __modelConfig.objfilename;
+            var mtlfilename = __modelConfig.mtlfilename;
+            return AjaxUtil.getObjMtlFileData(rootpath, objfilename, mtlfilename, params);
+        },
+        getFbxModel: function (__modelConfig, params) {
+            var rootpath = EnvConfig.protocol + EnvConfig.apiURL + __modelConfig.rootpath;
+            return AjaxUtil.getFbxFileData(rootpath, params);
+        },
+        getColladaModel: function (__modelConfig, params) {
+            var rootpath = EnvConfig.protocol + EnvConfig.apiURL + __modelConfig.rootpath;
+            return AjaxUtil.getColladaFileData(rootpath, params);
         }
     };
 })();

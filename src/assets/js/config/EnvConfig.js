@@ -1,14 +1,14 @@
 var EnvConfig = (function () {
     var env;
 
-    switch(window.location.hostname) {
+    switch (window.location.hostname) {
         case 'oobi.proptiger-ws.com':
             env = 'beta';
             break;
         case 'oobi.proptiger.com':
             env = 'prod';
             break;
-        default :
+        default:
             env = 'dev';
             break;
 
@@ -18,7 +18,7 @@ var EnvConfig = (function () {
         dev: {
             env: env,
             protocol: 'http://',
-            apiURL: 'localhost/00sandbox/pixum/model-viewer',
+            apiURL: 'localhost:8888',
             showLogs: true
         },
         beta: {

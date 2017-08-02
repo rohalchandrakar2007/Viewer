@@ -1,0 +1,22 @@
+{
+    "scenename": "Male",
+    "useconfig": false,
+    "tempconfig": {
+        "type": "collada",
+        "rootpath": "/src/assets/data/3dmodels/collada/monster.dae",
+        "objfilename": "monster.dae",
+        "vrhedposition": "",
+        "animenabled": false,
+        "navigationsupport": 2
+    },
+    "sceneinfo": {
+        "objects": [{
+            "name": "obj1",
+            "type": "objmtl",
+            "meshes": [{
+                "name": "m01"
+            }]
+       }],
+        "animenabled": false
+    }
+}

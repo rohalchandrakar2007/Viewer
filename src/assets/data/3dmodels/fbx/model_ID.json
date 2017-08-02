@@ -1,0 +1,22 @@
+{
+    "scenename": "Male",
+    "useconfig": false,
+    "tempconfig": {
+        "type": "fbx",
+        "rootpath": "/src/assets/data/3dmodels/fbx/xsi_man_skinning.fbx",
+        "objfilename": "male02.obj",
+        "vrhedposition": "",
+        "animenabled": false,
+        "navigationsupport": 2
+    },
+    "sceneinfo": {
+        "objects": [{
+            "name": "obj1",
+            "type": "objmtl",
+            "meshes": [{
+                "name": "m01"
+            }]
+       }],
+        "animenabled": false
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "scenename": "Male",
+    "useconfig": false,
+    "tempconfig": {
+        "type": "objmtl",
+        "rootpath": "/src/assets/data/3dmodels/objmtl/",
+        "objfilename": "male02.obj",
+        "mtlfilename": "male02.mtl",
+        "vrhedposition": "",
+        "animenabled": false,
+        "navigationsupport": 2
+    },
+    "sceneinfo": {
+        "objects": [{
+            "name": "obj1",
+            "type": "objmtl",
+            "meshes": [{
+                "name": "m01"
+            }]
+       }],
+        "animenabled": false
+    }
+}
